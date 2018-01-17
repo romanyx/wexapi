@@ -86,23 +86,14 @@ const (
 )
 
 func TestClient_tradeRequest(t *testing.T) {
-	type args struct {
-		result interface{}
-		method string
-	}
 	tests := []struct {
 		name    string
-		args    args
 		handler http.Handler
 		wantErr bool
 		errText string
 	}{
 		{
 			name: "error response",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, invalidMethodResponse)
 			}),
@@ -111,10 +102,6 @@ func TestClient_tradeRequest(t *testing.T) {
 		},
 		{
 			name: "error code",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 			}),
@@ -123,10 +110,6 @@ func TestClient_tradeRequest(t *testing.T) {
 		},
 		{
 			name: "invalid json",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, "/")
 			}),
@@ -135,10 +118,6 @@ func TestClient_tradeRequest(t *testing.T) {
 		},
 		{
 			name: "invalid return json",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, "/")
 			}),
@@ -147,10 +126,6 @@ func TestClient_tradeRequest(t *testing.T) {
 		},
 		{
 			name: "valid json",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, getInfoResponse)
 			}),
@@ -165,7 +140,7 @@ func TestClient_tradeRequest(t *testing.T) {
 
 			cli := NewClient("", "", SetHTTPClient(httpClient))
 
-			err := cli.tradeRequest(tt.args.result, tt.args.method)
+			err := cli.tradeRequest(&baseResponse{}, "any")
 
 			if tt.wantErr {
 				if err == nil {

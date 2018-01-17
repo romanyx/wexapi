@@ -62,23 +62,14 @@ const (
 )
 
 func TestClient_publicRequest(t *testing.T) {
-	type args struct {
-		result interface{}
-		method string
-	}
 	tests := []struct {
 		name    string
-		args    args
 		handler http.Handler
 		wantErr bool
 		errText string
 	}{
 		{
 			name: "error response",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, invalidMethodResponse)
 			}),
@@ -87,10 +78,6 @@ func TestClient_publicRequest(t *testing.T) {
 		},
 		{
 			name: "error code",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusInternalServerError)
 			}),
@@ -99,10 +86,6 @@ func TestClient_publicRequest(t *testing.T) {
 		},
 		{
 			name: "invalid json",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, "/")
 			}),
@@ -111,10 +94,6 @@ func TestClient_publicRequest(t *testing.T) {
 		},
 		{
 			name: "valid json",
-			args: args{
-				result: &baseResponse{},
-				method: "invalid",
-			},
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, infoResponse)
 			}),
@@ -129,7 +108,7 @@ func TestClient_publicRequest(t *testing.T) {
 
 			cli := NewClient("", "", SetHTTPClient(httpClient))
 
-			err := cli.publicRequest(tt.args.result, tt.args.method, nil)
+			err := cli.publicRequest(&baseResponse{}, "any", nil)
 
 			if tt.wantErr {
 				if err == nil {
