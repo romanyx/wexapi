@@ -26,5 +26,5 @@
   version = "0.8.0"
 
 [[constraint]]
+  branch = "master"
   name = "github.com/shopspring/decimal"
-  version = "1.0.0"

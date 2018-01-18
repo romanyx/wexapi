@@ -14,7 +14,7 @@ const (
 
 // ErrNonceOverflow caused when nonce is equal to 4294967294
 // which is maximum size for api key at wex.
-var ErrNonceOverflow = errors.New("max size reached: create new key")
+var ErrNonceOverflow = errors.New("max value reached: create new key")
 
 // Option for initializer.
 type Option func(*Client)
