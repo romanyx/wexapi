@@ -26,7 +26,7 @@ type Client struct {
 	key, secret string
 	httpClient  *http.Client
 
-	noncePool chan int64
+	noncePool chan uint64
 }
 
 // NewClient returns initialized client.
@@ -37,11 +37,11 @@ func NewClient(key, secret string, options ...Option) *Client {
 		httpClient: &http.Client{
 			Timeout: defaultTimeout,
 		},
-		noncePool: make(chan int64),
+		noncePool: make(chan uint64),
 	}
 
 	go func() {
-		cli.noncePool <- time.Now().Unix()
+		cli.noncePool <- uint64(time.Now().Unix())
 	}()
 
 	for _, option := range options {
@@ -56,5 +56,5 @@ func (cli *Client) nonce() string {
 	go func() {
 		cli.noncePool <- nonce + 1
 	}()
-	return strconv.FormatInt(nonce, 10)
+	return strconv.FormatUint(nonce, 10)
 }

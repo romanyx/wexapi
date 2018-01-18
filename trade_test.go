@@ -393,3 +393,17 @@ func TestClient_WithdrawCoin(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkClient_GetInfo(b *testing.B) {
+	server := createFakeServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, getInfoResponse)
+	}))
+	defer server.Close()
+	httpClient := testingHTTPClient(server)
+	cli := NewClient("", "", SetHTTPClient(httpClient))
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i = i + 1 {
+		cli.GetInfo()
+	}
+}
