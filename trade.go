@@ -166,9 +166,14 @@ func (cli *Client) WithdrawCoin(currency, address string, amount decimal.Decimal
 }
 
 func (cli *Client) tradeRequest(result interface{}, method string, params ...param) error {
+	nonce, err := cli.nonce()
+	if err != nil {
+		return errors.Wrap(err, "nonce")
+	}
+
 	data := url.Values{
 		"method": []string{method},
-		"nonce":  []string{cli.nonce()},
+		"nonce":  []string{nonce},
 	}
 
 	for _, param := range params {
