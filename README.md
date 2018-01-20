@@ -7,7 +7,7 @@ Go wrapper for http://wex.nz API v3
 
 # Examples
 
-See [examples](https://github.com/romanyx/go-wex/blob/master/examples)
+See [examples](https://github.com/romanyx/wexapi/blob/master/examples)
 
 # Testing
 
