@@ -13,23 +13,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s\n", info)
+	fmt.Printf("%v\n", info)
 
 	market, err := cli.Ticker("eth_btc")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s\n", market)
+	fmt.Printf("%v\n", market)
 
 	depth, err := cli.Depth("eth_btc", 2)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s\n", depth)
+	fmt.Printf("%v\n", depth)
 
 	trades, err := cli.Trades("eth_btc", 2)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s\n", trades)
+	fmt.Printf("%v\n", trades)
 }
