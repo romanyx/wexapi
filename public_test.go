@@ -145,10 +145,10 @@ func TestClient_Info(t *testing.T) {
 				Pairs: map[string]PairInfo{
 					"btc_usd": PairInfo{
 						DecimalPlaces: 3,
-						MinPrice:      decimal.NewFromFloat(0.1),
-						MaxPrice:      decimal.NewFromFloat(400),
-						MinAmount:     decimal.NewFromFloat(0.01),
-						Fee:           decimal.NewFromFloat(0.2),
+						MinPrice:      decimal.NewFromFloatWithExponent(0.1, -1),
+						MaxPrice:      decimal.NewFromFloatWithExponent(400, 0),
+						MinAmount:     decimal.NewFromFloatWithExponent(0.01, -2),
+						Fee:           decimal.NewFromFloatWithExponent(0.2, -1),
 					},
 				},
 			},
@@ -187,14 +187,14 @@ func TestClient_Ticker(t *testing.T) {
 				fmt.Fprint(w, tickerResponse)
 			}),
 			want: Market{
-				High:             decimal.NewFromFloat(109.88),
-				Low:              decimal.NewFromFloat(91.14),
-				Average:          decimal.NewFromFloat(100.51),
-				Volume:           decimal.NewFromFloat(1632898.2249),
-				VolumeInCurrency: decimal.NewFromFloat(16541.51969),
-				Last:             decimal.NewFromFloat(101.773),
-				Buy:              decimal.NewFromFloat(101.9),
-				Sell:             decimal.NewFromFloat(101.773),
+				High:             decimal.NewFromFloatWithExponent(109.88, -2),
+				Low:              decimal.NewFromFloatWithExponent(91.14, -2),
+				Average:          decimal.NewFromFloatWithExponent(100.51, -2),
+				Volume:           decimal.NewFromFloatWithExponent(1632898.2249, -4),
+				VolumeInCurrency: decimal.NewFromFloatWithExponent(16541.51969, -5),
+				Last:             decimal.NewFromFloatWithExponent(101.773, -3),
+				Buy:              decimal.NewFromFloatWithExponent(101.9, -1),
+				Sell:             decimal.NewFromFloatWithExponent(101.773, -3),
 				Updated:          unixTimestamp(time.Unix(1370816308, 0)),
 			},
 			wantErr: false,
@@ -234,16 +234,16 @@ func TestClient_Depth(t *testing.T) {
 			want: OrderBook{
 				Asks: []Order{
 					Order{
-						Rate:   decimal.NewFromFloat(103.426),
-						Amount: decimal.NewFromFloat(0.01),
-						Total:  decimal.NewFromFloat(1.03426),
+						Rate:   decimal.NewFromFloatWithExponent(103.426, -3),
+						Amount: decimal.NewFromFloatWithExponent(0.01, -2),
+						Total:  decimal.NewFromFloatWithExponent(1.03426, -5),
 					},
 				},
 				Bids: []Order{
 					Order{
-						Rate:   decimal.NewFromFloat(103.2),
-						Amount: decimal.NewFromFloat(2.48502251),
-						Total:  decimal.NewFromFloat(256.454323032),
+						Rate:   decimal.NewFromFloatWithExponent(103.2, -1),
+						Amount: decimal.NewFromFloatWithExponent(2.48502251, -8),
+						Total:  decimal.NewFromFloatWithExponent(256.454323032, -9),
 					},
 				},
 			},
@@ -285,8 +285,8 @@ func TestClient_Trades(t *testing.T) {
 				Trade{
 					ID:        4861261,
 					Type:      "ask",
-					Rate:      decimal.NewFromFloat(103.6),
-					Amount:    decimal.NewFromFloat(0.101),
+					Rate:      decimal.NewFromFloatWithExponent(103.6, -1),
+					Amount:    decimal.NewFromFloatWithExponent(0.101, -3),
 					Timestamp: unixTimestamp(time.Unix(1370818007, 0)),
 				},
 			},

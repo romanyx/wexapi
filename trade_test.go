@@ -186,8 +186,8 @@ func TestClient_GetInfo(t *testing.T) {
 			}),
 			want: UserInfo{
 				Funds: map[string]decimal.Decimal{
-					"usd": decimal.NewFromFloat(325),
-					"btc": decimal.NewFromFloat(23.998),
+					"usd": decimal.NewFromFloatWithExponent(325, 0),
+					"btc": decimal.NewFromFloatWithExponent(23.998, -3),
 					"ltc": decimal.Zero,
 				},
 				Rights: Rights{
@@ -235,11 +235,11 @@ func TestClient_Trade(t *testing.T) {
 			}),
 			want: UserTrade{
 				Funds: map[string]decimal.Decimal{
-					"usd": decimal.NewFromFloat(325),
-					"btc": decimal.NewFromFloat(2.498),
+					"usd": decimal.NewFromFloatWithExponent(325, 0),
+					"btc": decimal.NewFromFloatWithExponent(2.498, -3),
 					"ltc": decimal.Zero,
 				},
-				Received: decimal.NewFromFloat(0.1),
+				Received: decimal.NewFromFloatWithExponent(0.1, -1),
 				Remains:  decimal.Zero,
 				OrderID:  0,
 			},
@@ -282,8 +282,8 @@ func TestClient_ActiveOrders(t *testing.T) {
 					ID:               343152,
 					Pair:             "btc_usd",
 					Type:             "sell",
-					Amount:           decimal.NewFromFloat(12.345),
-					Rate:             decimal.NewFromFloat(485),
+					Amount:           decimal.NewFromFloatWithExponent(12.345, -3),
+					Rate:             decimal.NewFromFloatWithExponent(485, 0),
 					TimestampCreated: unixTimestamp(time.Unix(1342448420, 0)),
 				},
 			},
@@ -324,9 +324,9 @@ func TestClient_OrderInfo(t *testing.T) {
 			want: OrderInfo{
 				Pair:             "btc_usd",
 				Type:             "sell",
-				StartAmount:      decimal.NewFromFloat(13.345),
-				Amount:           decimal.NewFromFloat(12.345),
-				Rate:             decimal.NewFromFloat(485),
+				StartAmount:      decimal.NewFromFloatWithExponent(13.345, -3),
+				Amount:           decimal.NewFromFloatWithExponent(12.345, -3),
+				Rate:             decimal.NewFromFloatWithExponent(485, 0),
 				TimestampCreated: unixTimestamp(time.Unix(1342448420, 0)),
 				Status:           0,
 			},
@@ -366,11 +366,11 @@ func TestClient_WithdrawCoin(t *testing.T) {
 			}),
 			want: Withdraw{
 				TradeID:    37832629,
-				AmountSent: decimal.NewFromFloat(0.009),
+				AmountSent: decimal.NewFromFloatWithExponent(0.009, -3),
 				Funds: Funds{
-					"usd": decimal.NewFromFloat(325),
-					"btc": decimal.NewFromFloat(24.998),
-					"ltc": decimal.NewFromFloat(0),
+					"usd": decimal.NewFromFloatWithExponent(325, 0),
+					"btc": decimal.NewFromFloatWithExponent(24.998, -3),
+					"ltc": decimal.NewFromFloatWithExponent(0, 0),
 				},
 			},
 			wantErr: false,
