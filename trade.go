@@ -17,6 +17,12 @@ import (
 
 const (
 	tradeAPIEndpoint = "https://wex.nz/tapi"
+
+	// OrderInfo available status
+	OrderInfoStatusActive = iota
+	OrderInfoStatusExecutedOrder
+	OrderInfoStatusCancelled
+	OrderInfoStatusCancelledPartiallyExecuted
 )
 
 // Rights is a privileges of the current API key.
@@ -121,15 +127,27 @@ func (cli *Client) ActiveOrders(pair string) (TradeOrders, error) {
 	return tradeOrders, err
 }
 
+// OrderInfo holds data about order
+type OrderInfo struct {
+	ID               uint64
+	Pair             string          `json:"pair"`
+	Type             string          `json:"type"`
+	StartAmount      decimal.Decimal `json:"start_amount"`
+	Amount           decimal.Decimal `json:"amount"`
+	Rate             decimal.Decimal `json:"rate"`
+	TimestampCreated unixTimestamp   `json:"timestamp_created"`
+	Status           uint8
+}
+
 // OrderInfo returns the information on particular order.
 // To use this method you need a privilege of the info key.
-func (cli *Client) OrderInfo(orderID uint64) (TradeOrder, error) {
-	tradeOrders := make(map[string]TradeOrder)
+func (cli *Client) OrderInfo(orderID uint64) (OrderInfo, error) {
+	ordersInfo := make(map[string]OrderInfo)
 	orderIDString := strconv.FormatUint(orderID, 10)
-	err := cli.tradeRequest(&tradeOrders, "OrderInfo", param{key: "order_id", value: orderIDString})
-	trade := tradeOrders[orderIDString]
-	trade.ID = orderID
-	return tradeOrders[orderIDString], err
+	err := cli.tradeRequest(&ordersInfo, "OrderInfo", param{key: "order_id", value: orderIDString})
+	orderInfo := ordersInfo[orderIDString]
+	orderInfo.ID = orderID
+	return ordersInfo[orderIDString], err
 }
 
 // CancelOrder holds data about cancelled order.

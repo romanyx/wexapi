@@ -313,7 +313,7 @@ func TestClient_OrderInfo(t *testing.T) {
 	tests := []struct {
 		name    string
 		handler http.Handler
-		want    TradeOrder
+		want    OrderInfo
 		wantErr bool
 	}{
 		{
@@ -321,13 +321,14 @@ func TestClient_OrderInfo(t *testing.T) {
 			handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, orderInfoResponse)
 			}),
-			want: TradeOrder{
+			want: OrderInfo{
 				Pair:             "btc_usd",
 				Type:             "sell",
 				StartAmount:      decimal.NewFromFloat(13.345),
 				Amount:           decimal.NewFromFloat(12.345),
 				Rate:             decimal.NewFromFloat(485),
 				TimestampCreated: unixTimestamp(time.Unix(1342448420, 0)),
+				Status:           0,
 			},
 			wantErr: false,
 		},
